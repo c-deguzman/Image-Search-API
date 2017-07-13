@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>API Reference: Image Search Microservice</title>
+  
+  
+  <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+  <body>
+  <h1> <u> API Reference: Image Search Microservice  </u> </h1>
+    
+  <p> Image hosting services provided courtesy of Pixabay:  
+  <a href="https://pixabay.com/" style="margin:3px 15px 5px 0;font-size:12px;line-height:1.7;color:#555;display:block;width:90px;padding:9px 12px 7px;border:1px solid #ccc">
+                        <i style="display:block;width:68px;height:18px;overflow:hidden"><img src="https://pixabay.com/static/img/logo.svg" style="width:94px"></i></a>
+    </p>
+  <br>
+    
+  <p> Image Search Microservice - used for searching images and exploring recent searches. <br> Two classes of call:
+    <ul> 
+      <li> <a href="#shorten"> a image search request</a> </li>
+      <li> <a href="#retrieve"> a recent search terms request </a> </li>
+    </ul>
+  </p>
+
+  <h2 id="shorten"> Shortening Request </h2>
+  <p> A image search request is based on the query entered and the offset requested. The offset is used to iterate through results. <br> JSON will be retuned. "Total hits" from returned JSON refers to total number of results for search term. "Hits" refers to the first 10 search terms starting from <b>offset</b>. Each hit element object will contain three fields: </p>
+  <ul>
+    <li> A <b> page_url </b> directing to the webpage the image is hosted on. </li>
+    <li> A <b> image_url </b> offering a direct link to the image </li>
+    <li> <b> alt_text </b> a comma-separated listing of all the tags the image has </li>
+  </ul>
+
+<code>https://polar-drink.glitch.me/search?<b>search_term</b>="What+I+am+looking+for"&<b>offset</b>="30"</code>
+
+  <ul> 
+    <li> <b>search_term</b> - Search terms. Use '+' to seperate words </li>
+    <li> <b>offset</b> - (optional) used to paginate through results. Results will contain up to 10 elements, starting from position offset. (Offset >= 0, default = 0)</li>
+  </ul>
+
+  <table>
+    <tr> 
+      <th> Example Call </th>
+      <th> Example Result </th>
+    </tr>
+    <tr>
+      <td> <code> https://polar-drink.glitch.me/search?search_term=cute+dog&offset=300 </code> </td>
+      <td> <code> {
+"total_hits": 500,
+"hits": [
+{
+"image_url": "https://cdn.pixabay.com/photo/2017/04/03/02/14/puppy-2197326_150.jpg",
+"page_url": "https://pixabay.com/en/puppy-boy-dog-cute-love-kid-2197326/",
+"alt_text": "puppy, boy, dog"
+},
+{
+"image_url": "https://cdn.pixabay.com/photo/2017/03/11/19/17/boxer-2135671_150.jpg",
+"page_url": "https://pixabay.com/en/boxer-dog-sad-breed-pet-animal-2135671/",
+"alt_text": "boxer, dog, sad"
+},
+...
+]
+} </code> </td>
+    </tr>
+    <tr>
+      <td> <code> https://polar-drink.glitch.me/search?search_term=cute+dog&offset=498 </code> </td>
+      <td> <code> {"total_hits":500,"hits":[{"image_url":"https://cdn.pixabay.com/photo/2015/12/30/06/12/dog-1113807_150.jpg","page_url":"https://pixabay.com/en/dog-brown-pet-animal-cute-puppy-1113807/","alt_text":"dog, brown, pet"},{"image_url":"https://cdn.pixabay.com/photo/2016/04/09/16/30/dog-1318431_150.jpg","page_url":"https://pixabay.com/en/dog-play-meadow-romp-toys-animal-1318431/","alt_text":"dog, play, meadow"}]} </code> </td>
+    </tr>
+    <tr>
+      <td> <code> https://polar-drink.glitch.me/search?search_term=cute+dog&offset=501  </code> </td>
+      <td> <code> {
+"error": "out of range"
+}</code>  </td>
+    </tr>
+    <tr>
+      <td> <code> https://polar-drink.glitch.me/search?search_term=asdffee</code> </td>
+      <td> <code> {
+"error": "no results"
+} </code>  </td>
+    </tr>
+  </table>
+
+  <h2 id="retrieve"> Recent Searches </h2>
+  <p> A listing of the last 50 recent searches. Will return fewer if 50 searches have not been performed. </p>
+
+<table>
+<tr>
+      <td> <code> https://polar-drink.glitch.me/recent</code> </td>
+      <td> <code> {
+"list": [
+"asdffee",
+"cute dog",
+"cute dog",
+"cute dog",
+"yellow flowers",
+"yellow flowers"
+]
+}</code>  </td>
+    </tr>
+  </table>
+
+</body>
+  
+  
+</body>
+</html>
